@@ -63,5 +63,5 @@ The project follows **Hexagonal Architecture (Ports & Adapters)** to ensure modu
 
 ### 1️⃣ Clone the Repository
 ```bash
-git clone https://github.com/<your-username>/fuel-eu-maritime-compliance.git
+git clone https://github.com/<PavanSaiReddyM>/fuel-eu-maritime-compliance.git
 cd fuel-eu-maritime-compliance/backend
