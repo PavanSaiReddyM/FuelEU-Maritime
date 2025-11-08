@@ -3,7 +3,16 @@ import Route from "../../models/Route.js";
 
 const router = express.Router();
 
-
+router.post("/", async (req, res) => {
+  try {
+    const doc = req.body;
+    const col = (await import("mongoose")).default.connection.collection("routes");
+    const result = await col.insertOne(doc);
+    res.status(201).json({ insertedId: result.insertedId });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 router.get("/", async (req, res) => {
   const routes = await Route.find();
   res.json(routes);

@@ -6,10 +6,16 @@ export default function BankingPage() {
   const [cb, setCb] = useState(null);
   const [amount, setAmount] = useState("");
 
-  const fetchCB = async () => {
-    const res = await ComplianceRepository.getCB(year);
-    setCb(res);
-  };
+ const fetchCB = async () => {
+  const res = await ComplianceRepository.getCB({
+    shipId: "R001", 
+    year,
+    actualIntensity: 91.0,
+    fuelConsumption: 5000,
+  });
+  setCb(res);
+};
+
 
   const handleBank = async () => {
     await ComplianceRepository.bank({ year, amount: Number(amount) });

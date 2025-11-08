@@ -5,9 +5,28 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recha
 export default function ComparePage() {
   const [data, setData] = useState([]);
 
+   const [comparison, setComparison] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    RouteRepository.getComparison().then(setData);
+    const fetchComparison = async () => {
+      try {
+        const data = await RouteRepository.getComparison();
+        setComparison(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchComparison();
   }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div className="text-red-500">Error: {error}</div>;
+
 
   return (
     <div>

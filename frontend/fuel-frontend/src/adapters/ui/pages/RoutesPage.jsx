@@ -4,9 +4,24 @@ import { RouteRepository } from "../../infrastructure/apis/RouteRepository";
 export default function RoutesPage() {
   const [routes, setRoutes] = useState([]);
   const [filters, setFilters] = useState({ vessel: "", fuel: "", year: "" });
+ const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    RouteRepository.getAll().then(setRoutes);
+    const fetchRoutes = async () => {
+      try {
+        setLoading(true);
+        const data = await RouteRepository.getAll();
+        setRoutes(data);
+      } catch (err) {
+        setError(err.message);
+        console.error("Failed to fetch routes:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRoutes();
   }, []);
 
   const filtered = routes.filter(
@@ -17,9 +32,16 @@ export default function RoutesPage() {
   );
 
   const handleBaseline = async (id) => {
-    await RouteRepository.setBaseline(id);
-    alert("Baseline route set successfully!");
+    try {
+      await RouteRepository.setBaseline(id);
+      alert("Baseline route set successfully!");
+    } catch (err) {
+      alert("Failed to set baseline: " + err.message);
+    }
   };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div className="text-red-500">Error: {error}</div>;
 
   return (
     <div>
