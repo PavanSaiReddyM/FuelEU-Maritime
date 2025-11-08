@@ -1,29 +1,33 @@
-import { BrowserRouter as Router, Routes, Route, NavLink } from "react-router-dom";
-import RoutesPage from "./adapters/ui/pages/RoutesPage.jsx";
-import ComparePage from "./adapters/ui/pages/ComparePage.jsx";
-import BankingPage from "./adapters/ui/pages/BankingPage.jsx";
-import PoolingPage from "./adapters/ui/pages/PoolingPage.jsx";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "sonner";
+import Navigation from "./adapters/ui/components/Navigation.jsx";
+import RoutesPage from "./adapters/ui/pages/RoutesPage";
+import ComparePage from "./adapters/ui/pages/ComparePage";
+import BankingPage from "./adapters/ui/pages/BankingPage";
+import PoolingPage from "./adapters/ui/pages/PoolingPage";
 
-export default function App() {
+const queryClient = new QueryClient();
+
+function App() {
   return (
-    <Router>
-      <div className="min-h-screen bg-gray-50 text-gray-800">
-        <nav className="bg-blue-600 text-white p-4 flex gap-6">
-          <NavLink to="/" className="hover:underline">Routes</NavLink>
-          <NavLink to="/compare" className="hover:underline">Compare</NavLink>
-          <NavLink to="/banking" className="hover:underline">Banking</NavLink>
-          <NavLink to="/pooling" className="hover:underline">Pooling</NavLink>
-        </nav>
-
-        <div className="p-6">
-          <Routes>
-            <Route path="/" element={<RoutesPage />} />
-            <Route path="/compare" element={<ComparePage />} />
-            <Route path="/banking" element={<BankingPage />} />
-            <Route path="/pooling" element={<PoolingPage />} />
-          </Routes>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <div className="min-h-screen bg-gray-50">
+          <Navigation />
+          <div className="p-6">
+            <Routes>
+              <Route path="/" element={<RoutesPage />} />
+              <Route path="/compare" element={<ComparePage />} />
+              <Route path="/banking" element={<BankingPage />} />
+              <Route path="/pooling" element={<PoolingPage />} />
+            </Routes>
+          </div>
         </div>
-      </div>
-    </Router>
+      </BrowserRouter>
+      <Toaster richColors position="top-right" />
+    </QueryClientProvider>
   );
 }
+
+export default App;
